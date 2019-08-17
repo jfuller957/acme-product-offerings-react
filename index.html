@@ -40,21 +40,39 @@
     const { Component } = React;
     const root = document.querySelector('#root');
 
+    const Nav = ({ path, companies, products})=> {
+      return (
+        <nav>
+          <Link to='/companies' className={ path === '/companies' ? 'selected' : ''}>Companies</Link>
+          <Link to='/products' className={ path === '/products'  ? 'selected' : ''}>Products</Link>
+        </nav>
+      );
+    }
+
 
     class App extends Component{
       constructor(){
         super();
         this.state = {
-
+          companies: [],
+          products: []
         }
       }
-      componentDidMount(){
-
+      async componentDidMount(){
+        const companies = (await axios.get('https://acme-users-api-rev.herokuapp.com/api/companies')).data;
+        const products = (await axios.get('https://acme-users-api-rev.herokuapp.com/api/products')).data;
+        this.setState({ products, companies });
       }
       render(){
-        const { products } = this.state;
+        const { products, companies } = this.state;
+
         return (
-          <div><hr /></div>
+          <HashRouter>
+            <div>
+              <Route render={ (location)=> <Nav companies={ companies } location={location}/> } />
+              <Route render={ (location)=> <Nav products={ products } location={location}/> } />
+            </div>
+          </HashRouter>
         )
       }
     }
