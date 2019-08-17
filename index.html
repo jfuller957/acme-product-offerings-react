@@ -40,6 +40,40 @@
     const { Component } = React;
     const root = document.querySelector('#root');
 
+    const Companies = ({ data })=> {
+      return (
+        <div>
+          <h1>Companies</h1>
+            <ul>
+              {
+                data.map( (company, idx) => <li key={ idx }>{ company.name }</li>)
+              }
+            </ul>
+        </div>
+      );
+    }
+
+    const Products = ({ data })=> {
+      return (
+        <div>
+          <h1>Products</h1>
+            <ul>
+              {
+                data.map( (product, idx) => <li key={ idx }>{ product.name }</li>)
+              }
+            </ul>
+        </div>
+      );
+    }
+
+    const products = ({ products })=> {
+      return (
+        <div>
+          <h1>Products</h1>
+        </div>
+      );
+    }
+
     const Nav = ({ path, companies, products})=> {
       return (
         <nav>
@@ -69,11 +103,16 @@
         return (
           <HashRouter>
             <div>
-              <Route render={ (location)=> <Nav products={ products } companies={ companies } location={location}/> } />
-            </div>
 
+              <Route render={ (location)=> <Nav products={ products } companies={ companies } location={location}/> } />
+              <Route exact path='/' component= { Companies } />
+              <Route path='/companies' render={
+                ()=> <Companies data={ companies }/> } />
+              <Route path='/products' render={
+              ()=> <Products data={ products }/> } />
+            </div>
           </HashRouter>
-        )
+        );
       }
     }
     render(<App />, root);
