@@ -34,8 +34,31 @@
 <body>
   <div id="root"></div>
 
-  <script>
+  <script type="text/babel">
+    const { HashRouter, Switch, Link, Route, Redirect } = ReactRouterDOM;
+    const { render } = ReactDOM;
+    const { Component } = React;
+    const root = document.querySelector('#root');
 
+
+    class App extends Component{
+      constructor(){
+        super();
+        this.state = {
+
+        }
+      }
+      componentDidMount(){
+
+      }
+      render(){
+        const { products } = this.state;
+        return (
+          <div><hr /></div>
+        )
+      }
+    }
+    render(<App />, root);
   </script>
 </body>
 </html>
