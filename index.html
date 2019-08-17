@@ -19,15 +19,22 @@
     }
 
     li {
-      background-color: blueviolet
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
     }
 
     ul {
-      background-color: aqua
+      list-style-type: circle;
     }
 
-    .selected {
+    nav .selected {
+      border: solid 2px black;
+      border-radius: 1rem 1rem 0 0;
+      border-bottom: 0;
+      background-color: #ffffff;
+      font-weight: bold;
       color: orange
+      /* Must NEVER be Dodgerblue... Sorry not sorry. */
     }
   </style>
 </head>
@@ -41,12 +48,25 @@
     const root = document.querySelector('#root');
 
     const Companies = ({ data })=> {
+      console.log(data);
       return (
         <div>
           <h1>Companies</h1>
             <ul>
               {
-                data.map( (company, idx) => <li key={ idx }>{ company.name }</li>)
+                data.map( (company, idx) =>
+                <li key={ idx }>{ company.name }
+                  <br /><br />
+                  <span>{company.catchPhrase}</span>
+                  <br />
+                  <span>Offerings:</span>
+                    <ul>
+                      {
+                        <li>One dollands</li>
+                      }
+                    </ul>
+                  <hr />
+                </li>)
               }
             </ul>
         </div>
