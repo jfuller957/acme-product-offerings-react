@@ -62,7 +62,7 @@
                   <span>Offerings:</span>
                     <ul>
                       {
-                        <li>One dollands</li>
+                        <li></li>
                       }
                     </ul>
                   <hr />
@@ -122,15 +122,12 @@
 
         return (
           <HashRouter>
-            <div>
-
               <Route render={ (location)=> <Nav products={ products } companies={ companies } location={location}/> } />
               <Route exact path='/' component= { Companies } />
               <Route path='/companies' render={
                 ()=> <Companies data={ companies }/> } />
               <Route path='/products' render={
               ()=> <Products data={ products }/> } />
-            </div>
           </HashRouter>
         );
       }
