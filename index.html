@@ -118,6 +118,7 @@
 
         return (
           <HashRouter>
+          <Switch>
               <Route render={ (location)=>
                 <Nav products={ products } companies={ companies } location={location}/> } />
 
@@ -128,6 +129,7 @@
 
               <Route path='/products' render={
                 ()=> <Products data={ products }/> } />
+          </Switch>
           </HashRouter>
         );
       }
