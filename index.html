@@ -9,129 +9,70 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js"></script>
-  <title>Acme Product Offerings</title>
+  <title>Acme Product Averages</title>
   <style>
-    nav {
-      display: flex;
-      justify-content: space-between;
-      background-color: tomato;
-      padding: 1rem 0 0 0;
-    }
-
-    li {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 20px;
-    }
-
-    ul {
-      list-style-type: circle;
-    }
-
-    nav .selected {
-      border: solid 2px black;
-      border-radius: 1rem 1rem 0 0;
-      border-bottom: 0;
-      background-color: #ffffff;
+    .labels {
       font-weight: bold;
-      color: orange
-      /* Must NEVER be Dodgerblue... Sorry not sorry. */
     }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
 
-  <script type="text/babel">
-    const { HashRouter, Switch, Link, Route, Redirect } = ReactRouterDOM;
-    const { render } = ReactDOM;
+  </div>
+
+  <script type='text/babel'>
     const { Component } = React;
-    const root = document.querySelector('#root');
+    const { render } = ReactDOM;
 
-    const Companies = ({ data })=> {
-      console.log(data);
+    const MyProducts = ({ products, companies, offerings }) => {
+      let avg = 5;
+      let lowest = 'insert company'
+      console.log(avg);
       return (
         <div>
-          <h1>Companies</h1>
-            <ul>
-              {
-                data.map( (company, idx) =>
-                <li key={ idx }>{ company.name }
-                  <br /><br />
-                  <span>{company.catchPhrase}</span>
-                  <br />
-                  <span>Offerings:</span>
-                    <ul>
-                      {
-                        <li></li>
-                      }
-                    </ul>
-                  <hr />
-                </li>)
-              }
-            </ul>
+          {
+            products.map( ( product, idx ) =>
+              <div key={ idx }>
+                <span className="labels">Product</span>: { product.name }<br />
+                <span className="labels">Suggested Price</span>: { product.suggestedPrice }<br />
+                <span className="labels">Average Price</span>: { avg }<br />
+                <span className="labels">Lowest Price</span>: { lowest }<br />
+                <hr />
+              </div>
+            )
+          }
         </div>
-      );
+      )
     }
 
-    const Products = ({ data })=> {
-      return (
-        <div>
-          <h1>Products</h1>
-            <ul>
-              {
-                data.map( (product, idx) => <li key={ idx }>{ product.name }</li>)
-              }
-            </ul>
-        </div>
-      );
-    }
-
-    const Nav = ({ path, companies, products})=> {
-      return (
-        <nav>
-          <Link to='/companies' className={ path === '/companies' ? 'selected' : ''}>Companies</Link>
-          <Link to='/products' className={ path === '/products'  ? 'selected' : ''}>Products</Link>
-        </nav>
-      );
-    }
-
-    /*
-      <Link to='/' className={ path === '/companies' ? 'selected' : ''}>ACME Companies and Offerings</Link>
-    */
 
 
-    class App extends Component{
+    class App extends Component {
       constructor(){
         super();
         this.state = {
           companies: [],
-          products: []
+          products: [],
+          offerings: []
         }
       }
       async componentDidMount(){
         const companies = (await axios.get('https://acme-users-api-rev.herokuapp.com/api/companies')).data;
         const products = (await axios.get('https://acme-users-api-rev.herokuapp.com/api/products')).data;
-        this.setState({ products, companies });
+        const offerings = (await axios.get('https://acme-users-api-rev.herokuapp.com/api/offerings')).data;
+        this.setState({ products, companies, offerings });
       }
       render(){
-        const { products, companies } = this.state;
-
+        const { products, companies, offerings } = this.state;
         return (
-          <HashRouter>
-              <Route render={ (location)=>
-                <Nav products={ products } companies={ companies } location={location}/> } />
-
-              <Route exact path='/' component= { Companies } />
-
-              <Route path='/companies' render={
-                ()=> <Companies data={ companies }/> } />
-
-              <Route path='/products' render={
-                ()=> <Products data={ products }/> } />
-          </HashRouter>
+          <div>
+            <MyProducts products={ products } offerings={ offerings } companies={ companies } />
+          </div>
         );
       }
     }
+    const root = document.querySelector('#root');
     render(<App />, root);
   </script>
 </body>
